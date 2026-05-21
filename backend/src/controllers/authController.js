@@ -6,13 +6,13 @@ const generateToken=require('../utils/generateToken')
 
 const registerUser=async (req,res)=>{
     try{
-        const{name,email,password}=req.body;
-        const userExists=User.findOne({email});
-        if(!userExists){
+        const { name, email, password } = req.body;
+        const userExists = await User.findOne({ email });
+        if (userExists) {
             return res.status(400).json({
-                success:false,
-                message:"User exists"
-            })
+                success: false,
+                message: "User already exists"
+            });
         }
         const salt=await bcrypt.genSalt(5);
         const hashPasswrd=await bcrypt.hash(password,salt);
