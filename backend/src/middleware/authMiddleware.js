@@ -1,7 +1,7 @@
 const jwt=require('jsonwebtoken');
 const User=require('../models/User');
 
-const protect=async (requestAnimationFrame,res,next)=>{
+const protect=async (req,res,next)=>{
     try{
         let token;
         if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
@@ -14,7 +14,7 @@ const protect=async (requestAnimationFrame,res,next)=>{
             })
         }
         const verify=jwt.verify(token,process.env.JWT_SECRET);
-        req.user=await User.findOne(verify.id).select("-password");
+        req.user=await User.findById(verify.id).select("-password");
         next();
     }catch(error){
         return res.status(401).json({
