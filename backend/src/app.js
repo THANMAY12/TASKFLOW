@@ -9,7 +9,12 @@ const app=express();
 //Middlewares
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 app.use(helmet());
 
